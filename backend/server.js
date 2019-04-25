@@ -6,12 +6,12 @@ const mongoose = require('mongoose');
 const todoRoutes = express.Router();
 const PORT = 4000;
 
-let Todo = require('./card.model');
+let Card = require('./card.model');
 
 app.use(cors());
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://127.0.0.1:27017/caligraphy', { useNewUrlParser: true });
+mongoose.connect('mongodb://192.168.72.123:27017/calligraphy', { useNewUrlParser: true });
 const connection = mongoose.connection;
 
 connection.once('open', function() {
@@ -19,24 +19,24 @@ connection.once('open', function() {
 })
 
 todoRoutes.route('/').get(function(req, res) {
-    Todo.find(function(err, todos) {
+    Card.find(function(err, card) {
         if (err) {
             console.log(err);
         } else {
-            res.json(todos);
+            res.json(card);
         }
     });
 });
 
 todoRoutes.route('/:id').get(function(req, res) {
     let id = req.params.id;
-    Todo.findById(id, function(err, todo) {
+    Card.findById(id, function(err, todo) {
         res.json(todo);
     });
 });
 
 todoRoutes.route('/update/:id').post(function(req, res) {
-    Todo.findById(req.params.id, function(err, todo) {
+    Card.findById(req.params.id, function(err, todo) {
         if (!todo)
             res.status(404).send("data is not found");
         else
@@ -55,7 +55,7 @@ todoRoutes.route('/update/:id').post(function(req, res) {
 });
 
 todoRoutes.route('/add').post(function(req, res) {
-    let todo = new Todo(req.body);
+    let todo = new Card(req.body);
     todo.save()
         .then(todo => {
             res.status(200).json({'todo': 'todo added successfully'});
@@ -65,7 +65,7 @@ todoRoutes.route('/add').post(function(req, res) {
         });
 });
 
-app.use('/todos', todoRoutes);
+app.use('/calligraphy', todoRoutes);
 
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);

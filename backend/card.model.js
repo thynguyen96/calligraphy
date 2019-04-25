@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let Todo = new Schema({
+let Card = new Schema({
     todo_description: {
         type: String
     },
@@ -13,7 +13,11 @@ let Todo = new Schema({
     },
     todo_completed: {
         type: Boolean
-    }
+    },
+    group: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Group'
+    },
 });
 
-module.exports = mongoose.model('Todo', Todo);
+module.exports = mongoose.model('Card', Card);
